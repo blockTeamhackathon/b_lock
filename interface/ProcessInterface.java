@@ -1,4 +1,4 @@
-public interface b_lock {
+public interface ProcessInterface {
 
   public String startTransaction(String json);
 
