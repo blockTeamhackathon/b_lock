@@ -111,7 +111,7 @@ public class HelloWorldChaincode extends ChaincodeBase {
     	}
     	
     	String numbered_transactionId = transactionId + "_" + transaction_count;
-    	
+    	transaction_count++;
     	stub.putState(numbered_transactionId, args[1]);
     	stub.delState(transactionId);
     	stub.putState(transactionId, Integer.toString(transaction_count));
