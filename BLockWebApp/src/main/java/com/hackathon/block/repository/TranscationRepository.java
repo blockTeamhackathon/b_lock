@@ -12,9 +12,9 @@ import com.hackathon.block.model.Transaction;
 @RepositoryRestResource
 public interface TranscationRepository extends CrudRepository<Transaction, Long> {
 
-	Transaction findOne(String id);
+	Transaction findOne(long id);
 
-	List<Transaction> findByLockId(long lockId);
+	Transaction findByLockId(long lockId);
 
 	List<Transaction> findByUserId(long userId);
 

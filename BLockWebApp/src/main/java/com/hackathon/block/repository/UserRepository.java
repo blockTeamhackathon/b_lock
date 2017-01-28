@@ -12,7 +12,7 @@ import com.hackathon.block.model.User;
 @RepositoryRestResource
 public interface UserRepository extends CrudRepository<User, Long> {
 	
-	User findOne(String id);
+	User findOne(long id);
 
 	List<User> findByTransactionId(long lockId);
 

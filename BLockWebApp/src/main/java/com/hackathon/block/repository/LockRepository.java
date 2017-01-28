@@ -12,9 +12,9 @@ import com.hackathon.block.model.Lock;
 @RepositoryRestResource
 public interface LockRepository extends CrudRepository<Lock, Long> {
 
-	Lock findOne(String id);
+	Lock findOne(long id);
 
-	List<Lock> findByTransactionId(long transactionId);
+	Lock findByTransactionId(long transactionId);
 
 	Page<Lock> findAll(Pageable page);
 
