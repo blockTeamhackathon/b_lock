@@ -1,11 +1,18 @@
 package com.hackathon.block.implementation;
 
+import com.hackathon.block.model.Transaction;
 import com.hackathon.block.services.ProcessInterface;
 
 public class ProcessImp implements ProcessInterface {
 
 	@Override
 	public String startTransaction(String txid, String json) {
+		//Start transaction 
+		
+		
+		
+		
+		
         return executeCommandInDocker("startTransaction", txid, json);
 	}
 
@@ -66,4 +73,9 @@ public class ProcessImp implements ProcessInterface {
 //        }
         return output.toString();
     }
+
+	public Transaction findTransactionById(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
