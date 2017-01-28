@@ -1,9 +1,16 @@
 package com.hackathon.block.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
 
 @Entity
 public class Lock {
@@ -17,6 +24,17 @@ public class Lock {
 	private String secretKey;
 	
 	private long location;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	private Transaction transaction;
+
+	public Transaction getTransaction() {
+		return transaction;
+	}
+
+	public void setTransaction(Transaction transaction) {
+		this.transaction = transaction;
+	}
 
 	public String getSecretKey() {
 		return secretKey;
