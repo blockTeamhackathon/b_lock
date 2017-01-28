@@ -5,7 +5,7 @@ import org.hyperledger.java.shim.ChaincodeStub;
 
 
 /**
- * Created by jbowkett on 22/11/2016.
+ * b_lock fighting supply chain fraud
  */
 public class HelloWorldChaincode extends ChaincodeBase {
 
@@ -21,8 +21,41 @@ public class HelloWorldChaincode extends ChaincodeBase {
 
   @Override
   public String query(ChaincodeStub chaincodeStub, String function, String[] args) {
-    return "hello world query";
+    switch(function) {
+        case "startTransaction":
+            return startTransaction(args);
+        case "lock":
+            return lock(args);
+        case "getTransaction":
+            return getTransaction(args);
+        case "unlock":
+            return unlock(args);
+        case "endTransaction":
+            return endTransaction(args);
+        default:
+            return "No matching case for function:" + function;
+    }
   }
+
+    public String startTransaction(String[] args){
+        return "initializing lock " + args[0];
+    }
+
+    public String lock(String[] args){
+        return "closing";
+    }
+
+    public String getTransaction(String[] args){
+        return "get transaction";
+    }
+
+    public String unlock(String[] args){
+        return "opening";
+    }
+
+    public String endTransaction(String[] args){
+        return "done";
+    }
 
   @Override
   public String getChaincodeID() {
