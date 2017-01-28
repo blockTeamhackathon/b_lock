@@ -21,8 +21,29 @@ public class HelloWorldChaincode extends ChaincodeBase {
 
   @Override
   public String query(ChaincodeStub chaincodeStub, String function, String[] args) {
-    return "hello world query";
+    switch(function) {
+        case "startTrans":
+            return startTrans(args);
+        case "close":
+            return close(args);
+        case "open":
+            return open(args);
+        default:
+            return "No matching case for function:" + function;
+    }
   }
+
+    public String startTrans(String[] args){
+        return "initializing";
+    }
+
+    public String close(String[] args){
+        return "closing";
+    }
+
+    public String open(String[] args){
+        return "opening";
+    }
 
   @Override
   public String getChaincodeID() {
