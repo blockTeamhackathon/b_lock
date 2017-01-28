@@ -13,6 +13,7 @@ import org.hyperledger.java.shim.ChaincodeStub;
 public class HelloWorldChaincode extends ChaincodeBase {
 
   private static final String CHAINCODE_NAME = "HelloWorldChaincode";
+  private static final String TRANSACTIONS_COUNT_TABLE = "TransactionsCountTable" ;
   private static Map<String, Integer> transactions_count = new HashMap<String, Integer>();
   public HelloWorldChaincode() {
   }
@@ -39,7 +40,7 @@ public class HelloWorldChaincode extends ChaincodeBase {
         case "getTransaction":
             return getTransaction(args);
         case "getTransactionCount":
-            return Integer.toString(getTransactionCount(args[0]));
+            return Integer.toString(getTransactionCount(chaincodeStub, args[0]));
         default:
             return "No matching case for function:" + function;
     }
@@ -68,21 +69,53 @@ public class HelloWorldChaincode extends ChaincodeBase {
         return "done";
     }
 
-    public int getTransactionCount(String id){
-    	return transactions_count.get(id);
+    public int getTransactionCount(ChaincodeStub stub, String id){
+    	String state = stub.getState(id);
+    	
+    	if(state == null)
+    		return 0;
+    	
+    	if(!state.isEmpty())
+    	{
+    		try{
+    			return Integer.parseInt(state);
+    			
+			}catch(NumberFormatException e ){
+				System.out.println("{\"Error\":\"Expecting integer value for asset holding of "+state+" \"}"+e);		
+				return -1;		
+			}
+    	}
+    	else
+    	{
+    		return -1;
+    	}
     }
     
     public String insertTransaction(ChaincodeStub stub, String[] args){
     	
     	String transactionId = args[0];
-    	if(!transactions_count.containsKey(transactionId))
+    	String state = stub.getState(transactionId);
+    	int transaction_count = 0;
+    	if(state == null)
     	{
-    		transactions_count.put(transactionId, 0);
+    		stub.putState(transactionId, "0");
     	}
-    	String numbered_transactionId = transactionId + "_" + transactions_count.get(transactionId);
+    	if(!state.isEmpty())
+    	{
+    		try{
+    			transaction_count = Integer.parseInt(state);
+			}catch(NumberFormatException e ){
+				System.out.println("{\"Error\":\"Expecting integer value for asset holding of "+state+" \"}"+e);		
+				return "{\"Error\":\"Expecting integer value for asset holding of "+state+" \"}";		
+			}
+    	}
+    	
+    	String numbered_transactionId = transactionId + "_" + transaction_count;
     	
     	stub.putState(numbered_transactionId, args[1]);
-    	transactions_count.replace(transactionId, transactions_count.get(transactionId) + 1);
+    	stub.delState(transactionId);
+    	stub.putState(transactionId, Integer.toString(transaction_count));
+
 
         return null;
     }
