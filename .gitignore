@@ -1,3 +1,4 @@
 .gradle/
 blockchain/dev-team/git-clone/smart-cheques/starter-kit/docker-containers/mapped-fs-peer/build/
 *.log
+*.swp

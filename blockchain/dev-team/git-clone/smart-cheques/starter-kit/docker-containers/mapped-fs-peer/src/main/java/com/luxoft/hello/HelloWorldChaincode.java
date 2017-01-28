@@ -1,91 +1,68 @@
 package com.luxoft.hello;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hyperledger.java.shim.ChaincodeBase;
 import org.hyperledger.java.shim.ChaincodeStub;
-import org.hyperledger.protos.TableProto;
-//import org.hyperledger.common.Cryptography;
-//import org.hyperledger;
-
-import example.TableExample;
 
 
 /**
- * Created by jbowkett on 22/11/2016.
+ * b_lock fighting supply chain fraud
  */
 public class HelloWorldChaincode extends ChaincodeBase {
 
-  private static String tableName = "LedgerTable";
   private static final String CHAINCODE_NAME = "HelloWorldChaincode";
-  private static Map<String, Integer> transactions_count = new HashMap<String, Integer>();
-  private static Log log = LogFactory.getLog(TableExample.class);
 
   public HelloWorldChaincode() {
   }
 
   @Override
   public String run(ChaincodeStub chaincodeStub, String function, String[] args) {
-	  
-	  switch (function)
-	  {
-	  case "importtest" :
-		  	return insertTransaction(chaincodeStub, args);
-	  }
-
     return "hello world!";
   }
 
   @Override
   public String query(ChaincodeStub chaincodeStub, String function, String[] args) {
     switch(function) {
-        case "startTrans":
-            return startTrans(chaincodeStub, args);
-        case "close":
-            return close(args);
-        case "open":
-            return open(args);
-        
+        case "startTransaction":
+            return startTransaction(args);
+        case "lock":
+            return lock(args);
+        case "getTransaction":
+            return getTransaction(args);
+        case "unlock":
+            return unlock(args);
+        case "endTransaction":
+            return endTransaction(args);
+        case "getTransactionCount":
+            return Integer.toString(getTransactionCount(args[0]));
         default:
             return "No matching case for function:" + function;
     }
   }
 
-    public String startTrans(ChaincodeStub stub, String[] args){
-    	
-    	insertTransaction(stub, args);
-    	
-        return "Insert " + args[0];
+    public String startTransaction(String[] args){
+        return "initializing lock " + args[0];
     }
 
-    public String close(String[] args){
+    public String lock(String[] args){
         return "closing";
     }
 
-    public String open(String[] args){
+    public String getTransaction(String[] args){
+        return "get transaction";
+    }
+
+    public String unlock(String[] args){
         return "opening";
     }
 
-    
-    public String insertTransaction(ChaincodeStub stub, String[] args){
-    	
-    	String transactionId = args[0];
-    	if(!transactions_count.containsKey(transactionId))
-    	{
-    		transactions_count.put(transactionId, 0);
-    	}
-    	String numbered_transactionId = transactionId + "_" + transactions_count.get(transactionId);
-    	
-    	stub.putState(numbered_transactionId, args[1]);
-    	transactions_count.replace(transactionId, transactions_count.get(transactionId) + 1);
-
-        return null;
+    public String endTransaction(String[] args){
+        return "done";
     }
+
+    public int getTransactionCount(String id){
+        return 1;
+    }
+
   @Override
   public String getChaincodeID() {
     return CHAINCODE_NAME;
