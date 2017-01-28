@@ -1,0 +1,71 @@
+buildscript {
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+  }
+}
+
+
+plugins {
+  id "java"
+  id "application"
+  id "groovy"
+}
+
+
+task printClasspath {
+  doLast {
+    configurations.testRuntime.each { println it }
+  }
+}
+
+archivesBaseName = "chaincode"
+mainClassName = "com.luxoft.hello.HelloWorldChaincode"
+
+task(runHello, dependsOn: 'classes', type: JavaExec) {
+  main = "com.luxoft.hello.HelloWorldChaincode"
+  classpath = sourceSets.main.runtimeClasspath
+  if (project.hasProperty("appArgs")) {
+    args = Eval.me(appArgs)
+  }
+}
+
+sourceSets {
+  main {
+    java {
+      srcDir 'src/main/java'
+    }
+  }
+}
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+}
+
+
+jar.doFirst {
+  destinationDir = file("${buildDir}")
+  manifest {
+    attributes(
+            'Main-Class': mainClassName,
+            'Class-Path': configurations.runtime.collect {
+              "libs/" + "$it.name"
+            }.join(' ')
+    )
+  }
+}
+
+task copyToLib(type: Copy) {
+  into "$buildDir/libs"
+  from configurations.runtime
+}
+build.finalizedBy(copyToLib)
+
+
+dependencies {
+  compile 'io.grpc:grpc-all:0.13.2'
+  compile 'commons-cli:commons-cli:1.3.1'
+  compile 'org.hyperledger:shim-client:1.0'
+}
