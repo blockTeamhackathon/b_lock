@@ -9,4 +9,6 @@ public interface b_lock {
   public String unlock(String json);
 
   public String endTransaction(String json);
+
+  public int getTransactionCount(String id);
 }

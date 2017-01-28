@@ -32,6 +32,8 @@ public class HelloWorldChaincode extends ChaincodeBase {
             return unlock(args);
         case "endTransaction":
             return endTransaction(args);
+        case "getTransactionCount":
+            return Integer.toString(getTransactionCount(args[0]));
         default:
             return "No matching case for function:" + function;
     }
@@ -55,6 +57,10 @@ public class HelloWorldChaincode extends ChaincodeBase {
 
     public String endTransaction(String[] args){
         return "done";
+    }
+
+    public int getTransactionCount(String id){
+        return 1;
     }
 
   @Override
