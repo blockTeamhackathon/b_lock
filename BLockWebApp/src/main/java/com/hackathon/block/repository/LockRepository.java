@@ -12,7 +12,7 @@ import com.hackathon.block.model.Lock;
 @RepositoryRestResource
 public interface LockRepository extends CrudRepository<Lock, Long> {
 
-	Lock findOne(long id);
+	Lock findOne(Long id);
 
 	Lock findByTransactionId(long transactionId);
 
