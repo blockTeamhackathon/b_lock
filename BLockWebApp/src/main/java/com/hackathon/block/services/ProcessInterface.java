@@ -1,3 +1,5 @@
+package com.hackathon.block.services;
+
 public interface ProcessInterface {
 
   public String startTransaction(String txid, String json);
