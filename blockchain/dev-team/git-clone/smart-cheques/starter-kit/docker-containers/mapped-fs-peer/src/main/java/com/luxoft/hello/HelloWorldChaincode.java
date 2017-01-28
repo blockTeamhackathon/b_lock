@@ -19,22 +19,25 @@ public class HelloWorldChaincode extends ChaincodeBase {
 
   @Override
   public String run(ChaincodeStub chaincodeStub, String function, String[] args) {
-    return "hello world!";
-  }
-
-  @Override
-  public String query(ChaincodeStub chaincodeStub, String function, String[] args) {
     switch(function) {
         case "startTransaction":
         	return startTrans(chaincodeStub, args);
         case "lock":
             return lock(args);
-        case "getTransaction":
-            return getTransaction(args);
         case "unlock":
             return unlock(args);
         case "endTransaction":
             return endTransaction(args);
+        default:
+            return "No matching case for function:" + function;
+    }
+  }
+
+  @Override
+  public String query(ChaincodeStub chaincodeStub, String function, String[] args) {
+    switch(function) {
+        case "getTransaction":
+            return getTransaction(args);
         case "getTransactionCount":
             return Integer.toString(getTransactionCount(args[0]));
         default:
@@ -66,7 +69,7 @@ public class HelloWorldChaincode extends ChaincodeBase {
     }
 
     public int getTransactionCount(String id){
-        return 1;
+    	return transactions_count.get(id);
     }
     
     public String insertTransaction(ChaincodeStub stub, String[] args){
