@@ -23,7 +23,7 @@ public class HelloWorldChaincode extends ChaincodeBase {
   public String query(ChaincodeStub chaincodeStub, String function, String[] args) {
     switch(function) {
         case "startTrans":
-            return startTrans(args);
+            return startTrans(args[0]);
         case "close":
             return close(args);
         case "open":
@@ -33,8 +33,8 @@ public class HelloWorldChaincode extends ChaincodeBase {
     }
   }
 
-    public String startTrans(String[] args){
-        return "initializing";
+    public String startTrans(String lockId){
+        return "initializing lock " + lockId;
     }
 
     public String close(String[] args){
