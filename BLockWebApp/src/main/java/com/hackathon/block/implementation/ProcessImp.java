@@ -54,7 +54,7 @@ public class ProcessImp implements ProcessInterface {
 		transactionParsed.setState("Started");
 
 		// 3- Store the transaction
-		return executeCommandInDocker("startTransaction", txId, json);
+		return executeCommandInDocker("invoke", "startTransaction", txId, json);
 	}
 
 	@Override
@@ -66,13 +66,14 @@ public class ProcessImp implements ProcessInterface {
 
 		// 3- Store the flag
 
-		return "Locked";
+		return executeCommandInDocker("invoke", "lock", txid, json);
 	}
 
 	@Override
 	public String getTransaction(String txId) {
 
 		// 1- get the transation from Blockchain
+		String tx = executeCommandInDocker("query", "getTransaction", txId, "");
 
 		// 2- Json it
 		return gson.toJson(transaction);
@@ -80,6 +81,9 @@ public class ProcessImp implements ProcessInterface {
 
 	@Override
 	public String unlock(String txid, String json) {
+
+        // 1- unlock it on the blockchain
+		executeCommandInDocker("invoke", "unlock", txid, json);
 
 		// 2- modify the lock flag
 		lock.setFlag("Unlocked");
@@ -92,6 +96,8 @@ public class ProcessImp implements ProcessInterface {
 	@Override
 	public String endTransaction(String txid, String json) {
 		// 1- get the transaction from blockchain
+		String tx = executeCommandInDocker("query", "getTransaction", txid, json);
+		executeCommandInDocker("invoke", "endTransaction", txid, json);
 
 		// 2- modify the transaction state
 		transaction.setState("Ended");
@@ -102,14 +108,15 @@ public class ProcessImp implements ProcessInterface {
 	}
 
 	@Override
-	public int getTransactionCount() {
+	public int getTransactionCount(String txid) {
+		String count = executeCommandInDocker("query", "getTransactionCount", txid, "");
 
 		// TODO Auto-generated method stub
-		return 0;
+		return Integer.parseInt(count);
 	}
 
-	private String executeCommandInDocker(String functionName, String id, String json) {
-		String cmd = "docker exec -it starter peer chaincode invoke "
+	private String executeCommandInDocker(String verb, String functionName, String id, String json) {
+		String cmd = "docker exec -it starter peer chaincode " + verb + " "
 				+ "-l java -n  HelloWorldChaincode -c '{\"Args\":[\"" + functionName + "\", \"" + id + "\", \"" + json
 				+ "\"]}'";
 		return executeCommand(cmd);

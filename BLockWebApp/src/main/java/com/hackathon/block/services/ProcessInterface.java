@@ -20,5 +20,5 @@ public interface ProcessInterface {
 	// 6
 	public String endTransaction(String txId, String json);
 
-	public int getTransactionCount();
+	public int getTransactionCount(String txid);
 }
