@@ -16,19 +16,19 @@ public class TransactionController {
 
 	private ProcessImp service = new ProcessImp();
 
-	@RequestMapping("/find/{id}")
+	@RequestMapping("/{id}")
 	public String findById(@PathVariable(value = "id") String txId) {
 		return service.getTransaction(txId);
 	}
 
 	@RequestMapping(value = "/start", method = RequestMethod.POST)
-	public String startTransaction(@RequestBody @NotNull String txid, String json) {
-		return service.startTransaction(txid, json);
+	public String startTransaction(@RequestBody @NotNull String txId, String json) {
+		return service.startTransaction(txId, json);
 	}
 
-	@RequestMapping(value = "/end", method = RequestMethod.POST)
-	public String endTransaction(@RequestBody @NotNull String txid, String json) {
-		return service.endTransaction(txid, json);
+	@RequestMapping(value = "/end")
+	public String endTransaction(@RequestBody @NotNull String txId) {
+		return service.endTransaction(txId);
 	}
 
 	@RequestMapping("/all")

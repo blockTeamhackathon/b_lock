@@ -12,13 +12,13 @@ public interface ProcessInterface {
 	public String startTransaction(String txId, String json);
 
 	// 4
-	public String lock(String lockId, String json);
+	public String lock(String lockId);
 
 	// 5
-	public String unlock(String lockId, String json);
+	public String unlock(String lockId);
 
 	// 6
-	public String endTransaction(String txId, String json);
+	public String endTransaction(String txId);
 
 	public int getTransactionCount();
 }

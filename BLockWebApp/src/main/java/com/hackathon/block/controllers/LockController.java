@@ -16,25 +16,25 @@ public class LockController {
 
 	private ProcessImp service = new ProcessImp();
 
-	@RequestMapping("/find/{id}")
+	@RequestMapping("/{id}")
 	public String findById(@PathVariable(value = "id") String lockId) {
 		 return service.getLock(lockId);
 //		return "";
 	}
 
-	@RequestMapping(value = "/lock", method = RequestMethod.POST)
-	public String lock(@RequestBody @NotNull String txid, String json) {
-		return service.lock(txid, json);
+	@RequestMapping(value = "/lock/{id}", method = RequestMethod.POST)
+	public String lock(@RequestBody @NotNull String lockId) {
+		return service.lock(lockId);
 	}
 
-	@RequestMapping(value = "/unlock", method = RequestMethod.POST)
-	public String unlock(@RequestBody @NotNull String txid, String json) {
-		return service.endTransaction(txid, json);
+	@RequestMapping(value = "/unlock/{id}", method = RequestMethod.POST)
+	public String unlock(@RequestBody @NotNull String lockId) {
+		return service.unlock(lockId);
 	}
 
 	@RequestMapping("/all")
 	public String findAll() {
-		// return service.getAllLocks();
+//		return service.getAllLocks();
 		return "locks";
 	}
 

@@ -54,11 +54,13 @@ public class ProcessImp implements ProcessInterface {
 		transactionParsed.setState("Started");
 
 		// 3- Store the transaction
-		return executeCommandInDocker("startTransaction", txId, json);
+		 executeCommandInDocker("startTransaction", txId, json);
+		 
+		 return "Started";
 	}
 
 	@Override
-	public String lock(String txid, String json) {
+	public String lock(String lockId) {
 		// 1- get the flag from blockchain
 
 		// 2- modify the flag flag
@@ -79,7 +81,7 @@ public class ProcessImp implements ProcessInterface {
 	}
 
 	@Override
-	public String unlock(String txid, String json) {
+	public String unlock(String lockId) {
 
 		// 2- modify the lock flag
 		lock.setFlag("Unlocked");
@@ -90,7 +92,7 @@ public class ProcessImp implements ProcessInterface {
 	}
 
 	@Override
-	public String endTransaction(String txid, String json) {
+	public String endTransaction(String txId) {
 		// 1- get the transaction from blockchain
 
 		// 2- modify the transaction state
