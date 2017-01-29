@@ -17,8 +17,8 @@ public class TransactionController {
 	private ProcessImp service = new ProcessImp();
 
 	@RequestMapping("/find/{id}")
-	public String findById(@PathVariable(value = "id") String txid) {
-		return service.getTransaction(txid, new String());
+	public String findById(@PathVariable(value = "id") String txId) {
+		return service.getTransaction(txId);
 	}
 
 	@RequestMapping(value = "/start", method = RequestMethod.POST)

@@ -1,35 +1,24 @@
 package com.hackathon.block.model;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-
-
-@Entity
 public class Lock {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private String id;
 
 	private String flag;
-	
+
 	private String secretKey;
-	
-	private long location;
-	
-	@OneToOne(fetch = FetchType.LAZY)
-	private Transaction transaction;
 
-	public Transaction getTransaction() {
-		return transaction;
-	}
+	private String location;
 
-	public void setTransaction(Transaction transaction) {
-		this.transaction = transaction;
+	private String transactionId;
+
+	public Lock(String id, String flag, String secretKey, String location, String transactionId) {
+		super();
+		this.id = id;
+		this.flag = flag;
+		this.secretKey = secretKey;
+		this.location = location;
+		this.transactionId = transactionId;
 	}
 
 	public String getSecretKey() {
@@ -40,23 +29,6 @@ public class Lock {
 		this.secretKey = secretKey;
 	}
 
-
-	public long getLocation() {
-		return location;
-	}
-
-	public void setLocation(long location) {
-		this.location = location;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
 	public String getFlag() {
 		return flag;
 	}
@@ -64,6 +36,29 @@ public class Lock {
 	public void setFlag(String flag) {
 		this.flag = flag;
 	}
-	
+
+	public String getTransactionId() {
+		return transactionId;
+	}
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public String getLocation() {
+		return location;
+	}
 
 }

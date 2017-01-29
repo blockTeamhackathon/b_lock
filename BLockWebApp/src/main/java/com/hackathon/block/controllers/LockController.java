@@ -18,8 +18,8 @@ public class LockController {
 
 	@RequestMapping("/find/{id}")
 	public String findById(@PathVariable(value = "id") String lockId) {
-		// return service.getLock(lockId);
-		return "";
+		 return service.getLock(lockId);
+//		return "";
 	}
 
 	@RequestMapping(value = "/lock", method = RequestMethod.POST)

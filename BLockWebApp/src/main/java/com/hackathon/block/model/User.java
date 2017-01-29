@@ -2,49 +2,26 @@ package com.hackathon.block.model;
 
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-@Entity
 public class User {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private String id;
 
 	private String name;
 
 	private String role;
 
-	@OneToMany(fetch = FetchType.LAZY)
-	private List<Transaction> transactions;
+	private List<String> transactions;
 
-	public List<Transaction> getTransactions() {
-		return transactions;
-	}
-
-	public void setTransactions(List<Transaction> transactions) {
+	public User(String id, String name, String role, List<String> transactions) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.role = role;
 		this.transactions = transactions;
-	}
-
-	public String getRole() {
-		return role;
 	}
 
 	public void setRole(String role) {
 		this.role = role;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -53,5 +30,25 @@ public class User {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public List<String> getTransactions() {
+		return transactions;
+	}
+
+	public void setTransactions(List<String> transactions) {
+		this.transactions = transactions;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 }

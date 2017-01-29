@@ -2,51 +2,22 @@ package com.hackathon.block.model;
 
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-
-@Entity
 public class Transaction {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private String id;
 
 	private String state;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	private Lock lock;
+	private String lockId;
 
-	@OneToMany(fetch = FetchType.LAZY)
-	private List<User> users;
+	private List<String> usersId;
 
-	public Lock getLock() {
-		return lock;
-	}
-
-	public void setLock(Lock lock) {
-		this.lock = lock;
-	}
-
-	public List<User> getUsers() {
-		return users;
-	}
-
-	public void setUsers(List<User> users) {
-		this.users = users;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
+	public Transaction(String id, String state, String lockId, List<String> usersId) {
+		super();
 		this.id = id;
+		this.state = state;
+		this.lockId = lockId;
+		this.usersId = usersId;
 	}
 
 	public String getState() {
@@ -55,5 +26,29 @@ public class Transaction {
 
 	public void setState(String state) {
 		this.state = state;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getLockId() {
+		return lockId;
+	}
+
+	public void setLockId(String lockId) {
+		this.lockId = lockId;
+	}
+
+	public List<String> getUsersId() {
+		return usersId;
+	}
+
+	public void setUsersId(List<String> usersId) {
+		this.usersId = usersId;
 	}
 }

@@ -2,15 +2,23 @@ package com.hackathon.block.services;
 
 public interface ProcessInterface {
 
-  public String startTransaction(String txid, String json);
+	// 1
+	public String getLock(String lockId);
 
-  public String lock(String txid, String json);
+	// 2
+	public String getTransaction(String txId);
 
-  public String getTransaction(String txid, String json);
+	// 3
+	public String startTransaction(String txId, String json);
 
-  public String unlock(String txid, String json);
+	// 4
+	public String lock(String lockId, String json);
 
-  public String endTransaction(String txid, String json);
+	// 5
+	public String unlock(String lockId, String json);
 
-  public int getTransactionCount(String txid, String id);
+	// 6
+	public String endTransaction(String txId, String json);
+
+	public int getTransactionCount();
 }
