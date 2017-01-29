@@ -1,5 +1,7 @@
 package com.hackathon.block.implementation;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
@@ -43,7 +45,7 @@ public class ProcessImp implements ProcessInterface {
 	}
 
 	@Override
-	public String startTransaction(String txid, String json) {
+	public String startTransaction(String txId, String json) {
 		// 1- parse the transaction json
 
 		Transaction transactionParsed = gson.fromJson(json, Transaction.class);
@@ -52,8 +54,7 @@ public class ProcessImp implements ProcessInterface {
 		transactionParsed.setState("Started");
 
 		// 3- Store the transaction
-
-		return executeCommandInDocker("startTransaction", txid, json);
+		return executeCommandInDocker("startTransaction", txId, json);
 	}
 
 	@Override
@@ -79,12 +80,12 @@ public class ProcessImp implements ProcessInterface {
 
 	@Override
 	public String unlock(String txid, String json) {
-		// 1- get the lock from blockchain
 
 		// 2- modify the lock flag
 		lock.setFlag("Unlocked");
 
 		// 3- Store the flag
+
 		return "Unlocked";
 	}
 
@@ -119,19 +120,18 @@ public class ProcessImp implements ProcessInterface {
 		StringBuffer output = new StringBuffer();
 
 		Process p;
-		// try {
-		// p = Runtime.getRuntime().exec(command);
-		// p.waitFor();
-		// BufferedReader reader =
-		// new BufferedReader(new InputStreamReader(p.getInputStream()));
-		//
-		// String line = "";
-		// while ((line = reader.readLine())!= null) {
-		// output.append(line + "\n");
-		// }
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
+		try {
+			p = Runtime.getRuntime().exec(command);
+			p.waitFor();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+			String line = "";
+			while ((line = reader.readLine()) != null) {
+				output.append(line + "\n");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return output.toString();
 	}
 
