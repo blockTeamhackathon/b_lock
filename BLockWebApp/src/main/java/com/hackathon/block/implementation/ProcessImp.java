@@ -54,7 +54,7 @@ public class ProcessImp implements ProcessInterface {
 		transactionParsed.setState("Started");
 
 		// 3- Store the transaction
-		 executeCommandInDocker("startTransaction", txId, json);
+		 executeCommandInDocker("invoke", "startTransaction", txId, json);
 		 
 		 return "Started";
 	}
@@ -62,6 +62,7 @@ public class ProcessImp implements ProcessInterface {
 	@Override
 	public String lock(String lockId) {
 		// 1- get the flag from blockchain
+		 String json = executeCommandInDocker("invoke", "lock", lockId, "");
 
 		// 2- modify the flag flag
 		lock.setFlag("Locked");
@@ -75,9 +76,11 @@ public class ProcessImp implements ProcessInterface {
 	public String getTransaction(String txId) {
 
 		// 1- get the transation from Blockchain
+		 String json = executeCommandInDocker("query", "getTransaction", txId, "");
 
 		// 2- Json it
-		return gson.toJson(transaction);
+		//return gson.toJson(transaction);
+		return json;
 	}
 
 	@Override
@@ -87,6 +90,7 @@ public class ProcessImp implements ProcessInterface {
 		lock.setFlag("Unlocked");
 
 		// 3- Store the flag
+		 String json = executeCommandInDocker("invoke", "unlock", lockId, "");
 
 		return "Unlocked";
 	}
@@ -94,6 +98,7 @@ public class ProcessImp implements ProcessInterface {
 	@Override
 	public String endTransaction(String txId) {
 		// 1- get the transaction from blockchain
+		 String json = executeCommandInDocker("invoke", "endTransaction", txId, "");
 
 		// 2- modify the transaction state
 		transaction.setState("Ended");
@@ -104,15 +109,15 @@ public class ProcessImp implements ProcessInterface {
 	}
 
 	@Override
-	public int getTransactionCount() {
+	public int getTransactionCount(String txId) {
 
-		// TODO Auto-generated method stub
-		return 0;
+		 String count = executeCommandInDocker("query", "getTransactionCount", txId, "");
+		return Integer.valueOf(count);
 	}
 
-	private String executeCommandInDocker(String functionName, String id, String json) {
-		String cmd = "docker exec -it starter peer chaincode invoke "
-				+ "-l java -n  HelloWorldChaincode -c '{\"Args\":[\"" + functionName + "\", \"" + id + "\", \"" + json
+	private String executeCommandInDocker(String verb, String functionName, String id, String json) {
+		String cmd = "docker exec -i starter peer chaincode " + verb + " "
+				+ "-l java -n  HelloWorldChaincode -c '{\"Args\":[\"" + functionName + "\", \"" + id + "\", \""  + json 
 				+ "\"]}'";
 		return executeCommand(cmd);
 	}
@@ -124,17 +129,24 @@ public class ProcessImp implements ProcessInterface {
 		Process p;
 		try {
 			p = Runtime.getRuntime().exec(command);
-			p.waitFor();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			BufferedReader errors = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
 			String line = "";
 			while ((line = reader.readLine()) != null) {
 				output.append(line + "\n");
 			}
+            reader.close();
+			while ((line = errors.readLine()) != null) {
+				output.append(line + "\n");
+			}
+            errors.close();
+			p.waitFor();
 		} catch (Exception e) {
 			e.printStackTrace();
+            return "error executing " + command;
 		}
-		return output.toString();
+		return command + " response " + output.toString();
 	}
 
 	public String findTransactionById(String id) {
@@ -148,6 +160,7 @@ public class ProcessImp implements ProcessInterface {
 		// 1- get the transation from Blockchain
 
 		// 2- Json it
-		return gson.toJson(lock);
+		//return gson.toJson(lock);
+	    return getTransaction(lockId);
 	}
 }
