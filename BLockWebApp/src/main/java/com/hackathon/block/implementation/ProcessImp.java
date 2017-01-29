@@ -54,7 +54,7 @@ public class ProcessImp implements ProcessInterface {
 		transactionParsed.setState("Started");
 
 		// 3- Store the transaction
-		executeCommandInDocker("invoke", "startTransaction", txId, json);
+		 executeCommandInDocker("startTransaction", txId, json);
 		 
 		 return "Started";
 	}
@@ -110,7 +110,7 @@ public class ProcessImp implements ProcessInterface {
 		return 0;
 	}
 
-	private String executeCommandInDocker(String functionName,String tttt, String id, String json) {
+	private String executeCommandInDocker(String functionName, String id, String json) {
 		String cmd = "docker exec -it starter peer chaincode invoke "
 				+ "-l java -n  HelloWorldChaincode -c '{\"Args\":[\"" + functionName + "\", \"" + id + "\", \"" + json
 				+ "\"]}'";
