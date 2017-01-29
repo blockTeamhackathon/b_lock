@@ -146,7 +146,7 @@ public class ProcessImp implements ProcessInterface {
 			e.printStackTrace();
             return "error executing " + command;
 		}
-		return command + " response " + output.toString();
+		return output.toString();
 	}
 
 	public String findTransactionById(String id) {
